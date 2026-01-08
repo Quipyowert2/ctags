@@ -3547,6 +3547,7 @@ extern bool processRolesOption (const char *const option, const char *const para
 		char *kindName = eStrndup (kind + 1, name_end - (kind + 1));
 		if (strcmp (kindName, KIND_FILE_DEFAULT_NAME) == 0)
 		{
+			eFree(kindName);
 			error (WARNING, "don't enable/disable a role in %c/%s kind; it has no role: --%s",
 				   KIND_FILE_DEFAULT_LETTER, KIND_FILE_DEFAULT_NAME,
 				   option);
@@ -4801,6 +4802,8 @@ extern bool parseFileWithMio (const char *const fileName, MIO *mio,
 	if (Option.printLanguage)
 	{
 		printGuessedParser (fileName, language);
+		if (req.type == GLR_OPEN && req.mio)
+			mio_unref (req.mio);
 		return tagFileResized;
 	}
 
